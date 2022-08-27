@@ -31,9 +31,9 @@ namespace clients.Controllers
 
 
         [HttpGet]
-        public ActionResult<IEnumerable<Client>> GetClients()
+        public async Task<ActionResult<IEnumerable<Client>>> GetClientsAsync()
         {
-            return Ok(_clientInterfaceRepo.GetListOfClients());
+            return Ok(await _clientInterfaceRepo.GetListOfClients());
         }
 
         [HttpPost]
@@ -41,18 +41,18 @@ namespace clients.Controllers
         {
 
             _clientInterfaceRepo.CreateClient(dataInput);
-            return CreatedAtAction(nameof(GetClient), new {id = dataInput.Id}, dataInput);
+            return CreatedAtAction(nameof(GetClientAsync), new {id = dataInput.Id}, dataInput);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<Client> GetClient(int id)
+        public async Task<ActionResult<Client>> GetClientAsync(int id)
         {
             if(id == 0 )
             {
                 return NotFound();
             }
-            var client = _databaseContext.clients.FirstOrDefault(a => a.Id == id);
+            var client = await _databaseContext.clients.FirstOrDefaultAsync(a => a.Id == id);
             if(client == null)
             {
                 return NotFound();
@@ -62,13 +62,13 @@ namespace clients.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public ActionResult DeleteClient(int id)
+        public async Task<ActionResult> DeleteClientAsync(int id)
         {
             if(id == 0)
             {
                 return BadRequest();
             }
-            var data = _databaseContext.clients.FirstOrDefault(a => a.Id == id);
+            var data = await _databaseContext.clients.FirstOrDefaultAsync(a => a.Id == id);
             if(data == null)
             {
                 return NotFound();

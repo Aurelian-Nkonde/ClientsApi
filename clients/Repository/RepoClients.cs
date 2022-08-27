@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using clients.Models;
 using clients.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace clients.Repo
 {
-    public class RepoClients : IClient
+    public  class RepoClients : IClient
     {
         private readonly ApplicationDbContext _databaseContext;
 
@@ -32,16 +33,16 @@ namespace clients.Repo
             _databaseContext.SaveChanges();
         }
 
-        public IEnumerable<Client> GetListOfClients()
+        public async Task<IEnumerable<Client>> GetListOfClients()
         {
-            List<Client> clients = _databaseContext.clients.ToList();
+            List<Client> clients = await _databaseContext.clients.ToListAsync();
             return clients; 
         }
 
 
-        public bool SaveChanges()
+        public async Task<bool> SaveChangesAsync()
         {
-            return (_databaseContext.SaveChanges() >= 1);
+            return (await _databaseContext.SaveChangesAsync() >= 1);
         }
 
         public void UpdateClient(Client dataInput)
