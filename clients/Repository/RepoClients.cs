@@ -18,7 +18,7 @@ namespace clients.Repo
 
         public string ApiStatus()
         {
-            return $"Api is working fine";
+            return $"Api is working fine, active";
         }
 
         public void CreateClient(Client dataInput)
@@ -38,6 +38,7 @@ namespace clients.Repo
             List<Client> clients = await _databaseContext.clients.ToListAsync();
             return clients; 
         }
+
 
 
         public async Task<bool> SaveChangesAsync()
